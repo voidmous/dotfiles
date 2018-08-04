@@ -1,0 +1,4 @@
+Gnome下desktop文件可放置在~/.local/share/applications/目录下，这样在打开方式中就可以看到了。
+
+打开方式目录中出现相同的程序，为什么？有两个同样的desktop文件？
+如何在应用程序目录中添加？？

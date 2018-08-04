@@ -1,0 +1,23 @@
+# Comments start with '#'
+[credential]
+	helper = cache --timeout=3600
+[core]
+	editor = vim
+	ui = true
+	autocrlf = input
+    # Ref:https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration
+    # and http://www.rolandfg.net/2014/05/04/intellij-idea-and-git-on-windows/
+[alias]
+	st = status
+	co = checkout
+	ci = commit
+	br = branch
+	unstage = reset HEAD
+	last = log -1
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    lg1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+    lg2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+[color]
+	ui = true
+[push]
+	default = simple

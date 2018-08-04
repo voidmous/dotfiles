@@ -1,0 +1,6 @@
+vimrc 		~/.vimrc
+emacs 		~/.emacs
+bashrc 		~/.bashrc 	cygwin
+inputrc 	~/.inputrc 	cygwin
+minttyrc 	~/.minttyrc	cygwin
+gitconfig 	~/.gitconfig	cygwin

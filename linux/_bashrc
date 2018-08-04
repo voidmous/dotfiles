@@ -1,0 +1,121 @@
+#
+# ~/.bashrc
+#
+
+# Ref: https://wiki.archlinux.org/index.php/Bashrc#Configuration
+
+echo "============================== .bashrc in =============================="
+
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# PATH
+if [ -d "${HOME}/bin" ]; then
+    export PATH=${HOME}/bin:$PATH
+fi
+# Time saving alias
+alias ls='ls -hF --color=auto'
+alias ll='ls -alhF --color=auto'
+alias catn='cat -n' # show line numbers
+alias pp="echo \"$PATH\" | tr ':' '\n' | less" # Pretty print $PATH
+
+# PS1 for regular user and root
+if [ "root" = $USER ]; then
+    PS1="\[\e[31m\]\u:\[\e[33m\]\w\[\e[0m\]\# " # For root(RED)
+else
+    PS1="\[\e[32m\]\u:\[\e[33m\]\w\[\e[0m\]\$ " # For regular user(GREEN)
+fi
+
+# History setup
+#HISTSIZE=5000
+#HISTCONTROL=ignoredups # Remove continous repetitive commands
+#HISTCONTROL=erasedups # Remove all repetitive commands inside history
+HISTIGNORE="pwd:ls:cd:man:history" # Ignore some basic commands
+
+# https://zhuanlan.zhihu.com/p/27240408
+# https://unix.stackexchange.com/questions/1288/preserve-bash-history-in-multiple-terminal-windows
+# history related tuning
+export HISTTIMEFORMAT="%F %T "
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
+
+
+# Ignore case for completion
+bind "set completion-ignore-case on"
+
+# Colorful man page
+#export PAGER="`which less` -s"
+#export BROWSER="$PAGER"
+#export LESS_TERMCAP_mb=$'\E[01;34m'
+#export LESS_TERMCAP_md=$'\E[01;34m'
+#export LESS_TERMCAP_me=$'\E[0m'
+#export LESS_TERMCAP_se=$'\E[0m'
+#export LESS_TERMCAP_so=$'\E[01;44;33m'
+#export LESS_TERMCAP_ue=$'\E[0m'
+#export LESS_TERMCAP_us=$'\E[01;33m'
+
+# Useful functions
+today() {
+    echo -n "The day is: "
+    date +"%A, %B %-d, %Y"
+}
+
+# Login or non-login shell
+# Need test!
+if [[ "$0" =~ -* ]]; then
+    echo "Login shell"
+else
+    echo "Non-login shell"
+fi
+
+# Interactive shell or non-interactive shell
+# Need test!
+case $- in
+ *i*) # interactive shell
+    echo "Interactive shell"
+    ;;
+ *)
+    echo "Non-interactive shell"
+    ;;
+esac
+
+# Python configuration
+export PYTHONSTARTUP=~/.pythonstartup.py
+
+# Git PS1 from https://stackoverflow.com/questions/4133904/ps1-line-with-git-current-branch-and-colors
+# TODO try this: https://github.com/magicmonty/bash-git-prompt
+function color_my_prompt {
+    local __user_and_host="\[\033[01;32m\]\u@\h"
+    local __cur_location="\[\033[01;34m\]\w"
+    local __git_branch_color="\[\033[31m\]"
+    #local __git_branch="\`ruby -e \"print (%x{git branch 2> /dev/null}.grep(/^\*/).first || '').gsub(/^\* (.+)$/, '(\1) ')\"\`"
+    local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\(\\\\\1\)\ /`'
+    local __prompt_tail="\[\033[35m\]$"
+    local __last_color="\[\033[00m\]"
+    export PS1="$__user_and_host $__cur_location $__git_branch_color$__git_branch$__prompt_tail$__last_color "
+}
+color_my_prompt
+
+# Platform Specification
+# http://stackoverflow.com/questions/394230/detect-the-os-from-a-bash-script
+# https://www.cyberciti.biz/faq/find-linux-distribution-name-version-number/
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    echo "Linux-gnu environment detected."
+    lsb_release -a
+elif [[ "$OSTYPE" == "cygwin" ]]; then
+    echo "Cygwin environment detected."
+    uname -mrs
+    if [ -f "${HOME}/.bashrc.cygwin" ]; then
+        source "${HOME}/.bashrc.cygwin"
+    fi
+else
+    echo "Unknown Platform"
+fi
+
+echo "================================ .bashrc out =========================="

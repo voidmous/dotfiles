@@ -1,0 +1,15 @@
+# SJTU 
+deb http://ftp.sjtu.edu.cn/debian/ wheezy main non-free contrib
+deb-src http://ftp.sjtu.edu.cn/debian/ wheezy main non-free contrib
+
+# netease
+# deb http://mirrors.163.com/debian/ wheezy main non-free contrib
+# deb-src http://mirrors.163.com/debian/ wheezy main non-free contrib
+
+# Repo for emacs24 snapshot
+# For Debian unstable
+# deb http://emacs.naquadah.org/ unstable/
+# deb-src http://emacs.naquadah.org/ unstable/
+# For Debian testing and stable
+deb http://emacs.naquadah.org/ stable/
+deb-src http://emacs.naquadah.org/ stable/

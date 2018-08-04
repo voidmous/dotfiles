@@ -1,0 +1,1 @@
+build-essentials, autoconf, texlive, auctex, linux-header-`uname -r`(virtualbox needed)
