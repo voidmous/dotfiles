@@ -66,6 +66,41 @@ today() {
     date +"%A, %B %-d, %Y"
 }
 
+# https://www.tecmint.com/set-display-screen-resolution-in-ubuntu/
+# Set desktop resolution
+function setres() {
+    #set -x
+    MONITOR_NAME="Virtual1"  # TODO extract monitor name form xrandr
+    echo "Read Resolution Width: $1, Height: $2"
+    CVT_OUTPUT=$(cvt $1 $2)
+    echo -e "cvt output:\n$CVT_OUTPUT"
+    MODELINE=$(echo "$CVT_OUTPUT" | awk /"Modeline"/)
+    echo -e "Extracted mode line: \n$MODELINE"
+    #MODE_NAME=$(echo "$MODELINE" | cut -d ' ' -f 2 | awk '{$1=$1;print}' | tr -d '"')
+    MODE_NAME=$(echo "$MODELINE" | cut -d ' ' -f 2 | awk '{$1=$1;print}')
+    MODE_CMD=$(echo "$MODELINE" | cut -d ' ' -f 3- | awk '{$1=$1;print}')
+    echo -e "Mode Name: $MODE_NAME"
+    echo -e "Mode Command: $MODE_CMD"
+    # TODO eval is evil, refactor with python maybe ?
+    eval 'xrandr --newmode $MODE_NAME $MODE_CMD'
+    eval 'xrandr --addmode $MONITOR_NAME $MODE_NAME'
+    eval 'xrandr --output $MONITOR_NAME --mode $MODE_NAME --verbose'
+    echo "end"
+    #set +x
+}
+
+function setres_1920_1080() {
+    setres 1920 1080
+}
+
+function setres_2560_1080() {
+    setres 2560 1080
+}
+
+function setres_1600_900() {
+    setres 1600 900
+}
+
 # Login or non-login shell
 # Need test!
 if [[ "$0" =~ -* ]]; then
